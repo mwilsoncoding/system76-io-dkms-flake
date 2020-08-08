@@ -25,16 +25,16 @@
         dontStrip = true;
         dontPatchELF = true;
 
-        kernel = linuxPackages.kernel.dev;
-        nativeBuildInputs = linuxPackages.kernel.moduleBuildDependencies;
+        kernel = linuxPackages_latest.kernel.dev;
+        nativeBuildInputs = linuxPackages_latest.kernel.moduleBuildDependencies;
 
         preBuild = ''
-          sed -e "s@/lib/modules/\$(.*)@${linuxPackages.kernel.dev}/lib/modules/${linuxPackages.kernel.modDirVersion}@" -i Makefile
+          sed -e "s@/lib/modules/\$(.*)@${linuxPackages_latest.kernel.dev}/lib/modules/${linuxPackages_latest.kernel.modDirVersion}@" -i Makefile
         '';
         
         installPhase = ''
-           mkdir -p $out/lib/modules/${linuxPackages.kernel.modDirVersion}/misc
-           cp system76-io.ko $out/lib/modules/${linuxPackages.kernel.modDirVersion}/misc
+           mkdir -p $out/lib/modules/${linuxPackages_latest.kernel.modDirVersion}/misc
+           cp system76-io.ko $out/lib/modules/${linuxPackages_latest.kernel.modDirVersion}/misc
 
            # not sure if these are working
            mkdir -p $out/usr/share/initramfs-tools/hooks
@@ -43,18 +43,6 @@
            mkdir -p $out/usr/share/initramfs-tools/modules.d
            cp {$src,$out}/usr/share/initramfs-tools/modules.d/system76-io-dkms.conf
         '';
-      };
-
-    nixosModules.system76-io-dkms =
-      { pkgs, ... }:
-      {
-        config = {
-          boot.extraModulePackages = pkgs.system76-io-dkms;
-      
-          # system76_acpi automatically loads on darp6, but system76_io does not.
-          # Explicitly load both for consistency.
-          boot.kernelModules = [ "system76_io" ];
-        };
       };
   };
 }
