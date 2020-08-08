@@ -3,7 +3,7 @@
     DKMS module for controlling System76 Io board
   '';
 
-  inputs.nixpkgs.url = github:NixOS/nixpkgs/2d6cbbe4627f6fe4a179c681537b0a3e4f59b732;
+  inputs.nixpkgs.url = github:NixOS/nixpkgs/b3251e04ee470c20f81e75d5a6080ba92dc7ed3f;
 
   outputs = { self, nixpkgs }: {
 
