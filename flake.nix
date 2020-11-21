@@ -3,7 +3,7 @@
     DKMS module for controlling System76 Io board
   '';
 
-  inputs.nixpkgs.url = github:NixOS/nixpkgs/b3251e04ee470c20f81e75d5a6080ba92dc7ed3f;
+  inputs.nixpkgs.url = github:NixOS/nixpkgs/30d7b9341291dbe1e3361a5cca9052ee1437bc97;
 
   outputs = { self, nixpkgs }: {
 
@@ -25,16 +25,16 @@
         dontStrip = true;
         dontPatchELF = true;
 
-        kernel = linuxPackages_latest.kernel.dev;
-        nativeBuildInputs = linuxPackages_latest.kernel.moduleBuildDependencies;
+        kernel = linuxPackages_5_8.kernel.dev;
+        nativeBuildInputs = linuxPackages_5_8.kernel.moduleBuildDependencies;
 
         preBuild = ''
-          sed -e "s@/lib/modules/\$(.*)@${linuxPackages_latest.kernel.dev}/lib/modules/${linuxPackages_latest.kernel.modDirVersion}@" -i Makefile
+          sed -e "s@/lib/modules/\$(.*)@${linuxPackages_5_8.kernel.dev}/lib/modules/${linuxPackages_5_8.kernel.modDirVersion}@" -i Makefile
         '';
         
         installPhase = ''
-           mkdir -p $out/lib/modules/${linuxPackages_latest.kernel.modDirVersion}/misc
-           cp system76-io.ko $out/lib/modules/${linuxPackages_latest.kernel.modDirVersion}/misc
+           mkdir -p $out/lib/modules/${linuxPackages_5_8.kernel.modDirVersion}/misc
+           cp system76-io.ko $out/lib/modules/${linuxPackages_5_8.kernel.modDirVersion}/misc
 
            # not sure if these are working
            mkdir -p $out/usr/share/initramfs-tools/hooks
